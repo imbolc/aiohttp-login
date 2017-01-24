@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbBJREFUeNp8U79rwkAUfglpKaUiFCzBH6sdlIDaKXTXqVO3UtDBUTeHLp1acSnOguAfIHQouCl0EdzUOHVwUQqBDiKWNjZK+l7w0ng1fvDlXe7ue7/uTrAsC9zI5XLu31PkA/IaGUDOkS/IO+Q7bZDAG5fIZ1VVA0iIRCKg67q/3+/fttvtq9VqdYPrLcEjA4qsZbPZUCKR+Od5Op1CtVqdr9drReTWjjf2PpVKheLxOJimabPT6UCpVIJmswmyLEM6nfbjvifewVej0ThEm6HIy+XSYbfbhVqtBr1eDxaLBSSTSdqf2dWDH6QcDAZtIQNmBPl8HhRFASpbFEWQJOnEq4k6iv3uCcqI9YMcG4YB2MjPnQ58Pt95OByG8XjseUSappFpbTkoFotkrHK5bDcrFovtFM9mM+oJlfroOHitqPi9cMTRaNTuPgPVTcLJZAKDweB7cw9G0l/kbTGhXq/zwT8obWQF+UYTIp82EzPgsQpoBLR05Gd015iYIBQKhb2RNw4IR0iDy0iwSxgOh16R3SDxAZI1xh7zN9GJzr1KBpMfC/hgLD4tLhPYh18BBgBrEcO1eoJ+6QAAAABJRU5ErkJggg==">
+
+        <title>{% block auth_title %}aiohttp-login example{% endblock %}</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+
+	<body>
+		<div class="container">
+            {% include 'aiohttp_login/bootstrap-3/flash.html' %}
+            {% block auth_content %}{% endblock %}
+		</div>
+	</body>
+</html>
+

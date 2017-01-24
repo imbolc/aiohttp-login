@@ -1,0 +1,65 @@
+<style>
+    body {
+        background: #e2e1e0;
+    }
+    .auth-form {
+        max-width: 330px;
+        padding: 25px 15px;
+        margin: 40px auto;
+		animation: auth-emerge 0.3s;
+		background: #fff;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+    @keyframes auth-emerge {
+        0% {
+            -webkit-transform: scale(0.8);
+                    transform: scale(0.8);
+            opacity: 0;
+        }
+        100% {
+            -webkit-transform: scale(1);
+                    transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .auth-form h1 {
+        font-size: 200%;
+        margin-bottom: 20px;
+    }
+
+    .auth-form .form-control {
+        position: relative;
+        height: auto;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .auth-form .form-control:focus {
+        z-index: 2;
+    }
+    .auth-form .form-group {
+        margin-bottom: 0;
+    }
+    .auth-form fieldset {
+        margin-bottom: 10px;
+    }
+    .auth-form fieldset div:first-of-type input {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .auth-form fieldset div:not(:first-of-type):not(:last-of-type) input {
+        margin-bottom: -1px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .auth-form fieldset div:last-of-type input {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+</style>

@@ -1,0 +1,22 @@
+{% extends 'aiohttp_login/bootstrap-4/base.html' %}
+{% from 'aiohttp_login/bootstrap-4/macroses.html' import form_field %}
+
+{% block auth_title %}Change email{% endblock %}
+
+{% block auth_content %}
+    {% include 'aiohttp_login/bootstrap-4/styles.html' %}
+
+	<form onsubmit="this['submit'].disabled=true" action="" method="post" class="auth-form">
+        <h1>Change email</h1>
+
+        <fieldset>
+            {{ form_field(auth.form.email) }}
+        </fieldset>
+		{{ auth.form.csrf_token }}
+
+		<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-block"
+				>Change email</button>
+	</form>
+{% endblock %}

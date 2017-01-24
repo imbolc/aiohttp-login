@@ -1,0 +1,7 @@
+-r requirements.txt
+flake8
+pytest
+pytest-aiohttp
+jinja_app_loader
+asyncpg
+motor

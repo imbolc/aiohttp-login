@@ -1,0 +1,3 @@
+include requirements.txt README.md LICENSE
+include aiohttp_login/pg_tables.sql
+recursive-include aiohttp_login/templates *.html

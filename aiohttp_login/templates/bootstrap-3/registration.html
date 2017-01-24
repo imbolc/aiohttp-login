@@ -1,0 +1,41 @@
+{% extends 'aiohttp_login/bootstrap-3/base.html' %}
+{% from 'aiohttp_login/bootstrap-3/macroses.html' import form_field, form_password_field %}
+
+{% set title='Registration' %}
+{% block auth_title %}Registration{% endblock %}
+
+{% block auth_content %}
+    {% include 'aiohttp_login/bootstrap-3/styles.html' %}
+
+	<form onsubmit="this['submit'].disabled=true" action="" method="post" class="auth-form">
+        <h1>Registration</h1>
+
+        <fieldset>
+            {{ form_field(auth.form.email) }}
+            {{ form_password_field(auth.form.password, auth.cfg) }}
+            {{ form_field(auth.form.confirm, oninput="auth_check_password_matching(this)") }}
+        </fieldset>
+		{{ auth.form.csrf_token }}
+
+		<button type="submit"
+				name="submit"
+				class="btn btn-primary btn-block"
+				>Register</button>
+
+		{% include 'aiohttp_login/bootstrap-3/social_auth_buttons.html' %}
+
+        <div style="text-align:right; margin-top:30px">
+            <a href="{{ auth.url_for('auth_login') }}">Already have an account?</a>
+        </div>
+	</form>
+
+    <script>
+		function auth_check_password_matching(input) {
+			if (input.value != document.getElementById('password').value) {
+                input.setCustomValidity('{{ auth.form.equal_to_message }}');
+			} else {
+				input.setCustomValidity('');
+			}
+		}
+    </script>
+{% endblock %}

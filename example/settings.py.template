@@ -1,0 +1,22 @@
+PORT = 8000
+DEBUG = True
+DATABASE = 'postgres:///aiohttp_login'
+SESSION_SECRET = 'Thirty  two  length  bytes  key.'
+SESSION_MAX_AGE = 315360000
+
+AUTH = {
+    'CSRF_SECRET': 'secret',
+
+    'VKONTAKTE_ID': None,
+    'VKONTAKTE_SECRET': None,
+    'GOOGLE_ID': None,
+    'GOOGLE_SECRET': None,
+    'FACEBOOK_ID': None,
+    'FACEBOOK_SECRET': None,
+
+    'SMTP_SENDER': 'Your Name <your@gmail.com>',
+    'SMTP_HOST': 'smtp.gmail.com',
+    'SMTP_PORT': 465,
+    'SMTP_USERNAME': 'your@gmail.com',
+    'SMTP_PASSWORD': 'password'
+}

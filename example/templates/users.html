@@ -1,0 +1,25 @@
+{% extends 'aiohttp_login/bootstrap-4/base.html' %}
+
+{% block auth_content %}
+    {% include 'aiohttp_login/bootstrap-4/styles.html' %}
+
+    <div class="auth-form">
+        <h1>List of users</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.created_at.date() }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

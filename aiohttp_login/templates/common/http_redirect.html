@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Logged In</title>
+        <meta http-equiv="Refresh" content="0; url={{ url|urlencode }}">
+        <script>
+            window.location.replace('{{ url|urlencode }}');
+        </script>
+    </head>
+    <body>
+        You are logged in.
+        Please follow <a href="{{ url|urlencode }}">this link</a>.
+    </body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'aiohttp_login/bootstrap-4/base.html' %}
+
+{% block auth_content %}
+    {% include 'aiohttp_login/bootstrap-4/styles.html' %}
+
+    <div class="auth-form" style="max-width: 95%">
+        {{ readme | safe }}
+
+        {% if not cur_user %}
+            <p>You are <b>not logged in</b>, try to:</p>
+            <ul>
+                <li><a href="{{ url_for('auth_registration') }}">Register</a></li>
+                <li><a href="{{ url_for('auth_login') }}">Log In</a></li>
+                <li><a href="{{ url_for('auth_reset_password') }}">Reset password</a></li>
+            </ul>
+        {% else %}
+            <p>You are logged in as <b>{{ cur_user.name }}</b>, try to:</p>
+            <ul>
+                <li><a href="{{ url_for('auth_change_email') }}">Change Email</a></li>
+                <li><a href="{{ url_for('auth_change_password') }}">Change password</a></li>
+                <li><a href="{{ url_for('auth_logout') }}">Log Out</a></li>
+            </ul>
+        {% endif %}
+
+        <p>Or try to open a <a href="{{ url_for('users') }}">private page</a>.</p>
+    </div>
+{% endblock %}

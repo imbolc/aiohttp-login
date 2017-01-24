@@ -1,0 +1,16 @@
+<div style="text-align:center; margin:10px">or</div>
+
+<a href="{{ auth.url_for('auth_social', provider='vkontakte') }}"
+   class="btn btn-primary btn-block"
+   style="background: #6888ad; margin-bottom:5px"
+   ><i class="fa fa-vk"></i>&nbsp; Login with Vkontakte</a>
+
+<a href="{{ auth.url_for('auth_social', provider='google') }}"
+   class="btn btn-primary btn-block btn-danger"
+   style="background: #db4437; margin-bottom:5px"
+   ><i class="fa fa-google-plus"></i>&nbsp; Login with Google</a>
+
+<a href="{{ auth.url_for('auth_social', provider='facebook') }}"
+   class="btn btn-primary btn-block"
+   style="background: #4267b2;"
+   ><i class="fa fa-facebook"></i>&nbsp; Login with  Facebook</a>

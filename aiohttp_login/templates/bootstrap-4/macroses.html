@@ -1,0 +1,21 @@
+{% macro form_field(field) %}
+    <div class="form-group{% if field.errors %} has-danger{% endif %}">
+        {{ field(
+            class='form-control',
+            placeholder=field.label.text,
+            required=field.flags.required,
+            **kwargs
+        ) }}
+        {% if field.errors %}
+            <div class="form-control-feedback">{{ field.errors[0] }}</div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro form_password_field(field, cfg) %}
+    {{ form_field(
+        field,
+        pattern='.{%s,%s}' % cfg.PASSWORD_LEN,
+        title='from {} to {} characters'.format(*cfg.PASSWORD_LEN),
+    ) }}
+{% endmacro %}
