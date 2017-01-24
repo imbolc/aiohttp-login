@@ -58,7 +58,8 @@ async def social(request):
         url = url_for(cfg.LOGIN_REDIRECT)
         if provider in ['google', 'facebook']:
             return render_template(
-                'common/http_redirect.html', request, {'url': url})
+                'aiohttp_login/common/http_redirect.html',
+                request, {'url': url})
         return redirect(url)
 
     flash.error(request, 'Авторизация не удалась')
