@@ -2,7 +2,7 @@ aiohttp-login
 =============
 Registration and authorization (including social) for aiohttp apps
 
-Whih just a few settigs you'll give for your [aiohttp][] site:
+With just a few settings you'll give for your [aiohttp][] site:
 
 - registration with email confirmation
 - authorization by email or social account
@@ -19,14 +19,14 @@ You can use this lib with different database backends:
 
 - postgres with [asyncpg][]
 - mongodb with [motor][]
-- *the db you need* - it's very easy to add a new backend
+- the db you need - *it's very easy to add a new backend*
 
 
 UI themes
 ---------
-The library designed to easly change UI themes.
-Currently `bootstrap-3` and `bootstrap-4` themes are avaliable.
-But it's very easy to add new themes, actully theme - is just a folder
+The library designed to easily change UI themes.
+Currently `bootstrap-3` and `bootstrap-4` themes are available.
+But it's very easy to add new themes, actually theme - is just a folder
 with jinja2 templates.
 
 
