@@ -83,8 +83,10 @@ aiohttp_login.setup(app, storage, {
 })
 ```
 
-That's all. Look at the live [example][] and its code in the `example` folder.
-Full list of available settings you can find in `cfg.py` file.
+That's all. Look at the [live example][example] and its code in the
+[example][example-repo] folder.
+Full list of available settings you can find in
+[aiohttp_login/cfg.py][cfg] file.
 
 
 Run the example
@@ -101,8 +103,7 @@ Create postgres database and tables:
     createdb aiohttp_login
     psql -d aiohttp_login -f ../aiohttp_login/pg_tables.sql
 
-Rename `settings.py.template` to `settings.py` and populate it
-    with real data.
+Rename `settings.py.template` to `settings.py` and populate it with real data.
 
 Run the server:
 
@@ -111,13 +112,15 @@ Run the server:
 
 Run tests
 ---------
-    pip install -r requirements.txt
+
     pip install -r requirements-dev.txt
     py.test
 
 
 [repo]: https://github.com/imbolc/aiohttp-login
 [example]: http://aiohttp-login.imbolc.name/
+[example-repo]: https://github.com/imbolc/aiohttp-login/tree/master/example
 [aiohttp]: https://github.com/KeepSafe/aiohttp
 [asyncpg]: https://github.com/MagicStack/asyncpg
 [motor]: https://github.com/mongodb/motor
+[cfg]: https://github.com/imbolc/aiohttp-login/blob/master/aiohttp_login/cfg.py
