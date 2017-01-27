@@ -108,12 +108,18 @@ def get_client_ip(request):
 
 
 async def send_mail(recipient, subject, body):
-    async with aiosmtplib.SMTP(
-        loop=cfg.APP.loop,
-        hostname=cfg.SMTP_HOST,
-        port=cfg.SMTP_PORT,
-        use_tls=cfg.SMTP_TLS,
-    ) as smtp:
+    if cfg.SMTP_PORT == 587:
+        # aiosmtplib does not handle port 587 correctly
+        # plaintext first, then use starttls
+        # this is a workaround
+        smtp = aiosmtplib.SMTP(
+            loop=cfg.APP.loop,
+            hostname=cfg.SMTP_HOST,
+            port=cfg.SMTP_PORT,
+            use_tls=cfg.SMTP_TLS)
+        await smtp.connect(use_tls=False, port=cfg.SMTP_PORT)
+        if cfg.SMTP_TLS:
+            await smtp.starttls(validate_certs=False)
         if cfg.SMTP_USERNAME:
             await smtp.login(cfg.SMTP_USERNAME, cfg.SMTP_PASSWORD)
         msg = MIMEText(body, 'html')
@@ -121,6 +127,21 @@ async def send_mail(recipient, subject, body):
         msg['From'] = cfg.SMTP_SENDER
         msg['To'] = recipient
         await smtp.send_message(msg)
+        await smtp.quit()
+    else:
+        async with aiosmtplib.SMTP(
+                loop=cfg.APP.loop,
+                hostname=cfg.SMTP_HOST,
+                port=cfg.SMTP_PORT,
+                use_tls=cfg.SMTP_TLS,
+                ) as smtp:
+            if cfg.SMTP_USERNAME:
+                await smtp.login(cfg.SMTP_USERNAME, cfg.SMTP_PASSWORD)
+                msg = MIMEText(body, 'html')
+                msg['Subject'] = subject
+                msg['From'] = cfg.SMTP_SENDER
+                msg['To'] = recipient
+                await smtp.send_message(msg)
 
 
 async def render_and_send_mail(request, to, template, context=None):
