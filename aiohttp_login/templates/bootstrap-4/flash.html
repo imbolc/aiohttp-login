@@ -1,5 +1,5 @@
 {% for message, level in get_flashed_messages() %}
-    <div class="alert alert-{{ level }}">
+    <div class="alert alert-{{ 'danger' if level == 'error' else level }}">
         {{ message }}
     </div>
 {% endfor %}
