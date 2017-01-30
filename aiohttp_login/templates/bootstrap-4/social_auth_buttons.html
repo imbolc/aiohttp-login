@@ -5,12 +5,12 @@
    style="background: #6888ad; margin-bottom:5px"
    ><i class="fa fa-vk"></i>&nbsp; Login with Vkontakte</a>
 
-<a href="{{ auth.url_for('auth_social', provider='google') }}"
+<a href="{{ auth.social_url('google') }}"
    class="btn btn-primary btn-block btn-danger"
    style="background: #db4437; margin-bottom:5px"
    ><i class="fa fa-google-plus"></i>&nbsp; Login with Google</a>
 
-<a href="{{ auth.url_for('auth_social', provider='facebook') }}"
+<a href="{{ auth.social_url('facebook') }}"
    class="btn btn-primary btn-block"
    style="background: #4267b2;"
    ><i class="fa fa-facebook"></i>&nbsp; Login with  Facebook</a>
