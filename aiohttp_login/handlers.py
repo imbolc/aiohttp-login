@@ -27,7 +27,6 @@ async def social(request):
         # try to find user by provider_id
         user = await db.get_user({provider: data['user_id']})
         if user:
-            log.debug('oauth: authorized by provider id')
             break
 
         if data['email']:
@@ -35,7 +34,6 @@ async def social(request):
             user = await db.get_user({'email': data['email']})
             if user:
                 await db.update_user(user, {provider: data['user_id']})
-                log.debug('oauth: Authorized by email')
                 break
 
             # register new user
@@ -48,7 +46,6 @@ async def social(request):
                 'created_ip': get_client_ip(request),
                 provider: data['user_id'],
             })
-            log.debug('social: new user created')
             break
         break
 
@@ -62,7 +59,7 @@ async def social(request):
                 request, {'url': url})
         return redirect(url)
 
-    flash.error(request, 'Авторизация не удалась')
+    flash.error(request, cfg.MSG_AUTH_FAILED)
     return redirect('auth_login')
 
 

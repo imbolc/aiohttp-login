@@ -54,6 +54,7 @@ DEFAULTS = {
     'MSG_CHANGE_EMAIL_REQUESTED': ('Please, click on the verification link'
                                    ' we sent to your new email address'),
     'MSG_EMAIL_CHANGED': 'Your email is changed',
+    'MSG_AUTH_FAILED': 'Authorization failed',
 
     # next settings are initialized during `setup()`, do not set it manually
     'APP': REQUIRED,
