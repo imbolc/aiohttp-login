@@ -99,6 +99,16 @@ def redirect(urlname, *args, **kwargs):
     return HTTPFound(url_for(urlname, *args, **kwargs))
 
 
+def social_url(request):
+    def create(provider):
+        url = url_for('auth_social', provider=provider)
+        back_url = request.GET.get(cfg.BACK_URL_QS_KEY)
+        if back_url:
+            url = url.with_query({cfg.BACK_URL_QS_KEY: back_url})
+        return url
+    return create
+
+
 def get_client_ip(request):
     try:
         ips = request.headers['X-Forwarded-For']

@@ -11,7 +11,8 @@ from .decorators import login_required
 from .utils import (encrypt_password, make_confirmation_link,
                     check_password, authorize_user, is_confirmation_allowed,
                     get_random_string, url_for, get_client_ip, redirect,
-                    render_and_send_mail, is_confirmation_expired, themed)
+                    render_and_send_mail, is_confirmation_expired, themed,
+                    social_url)
 
 
 log = logging.getLogger(__name__)
@@ -52,7 +53,7 @@ async def social(request):
     if user:
         await authorize_user(request, user)
         flash.success(request, cfg.MSG_LOGGED_IN)
-        url = url_for(cfg.LOGIN_REDIRECT)
+        url = request.GET.get(cfg.BACK_URL_QS_KEY, cfg.LOGIN_REDIRECT)
         if provider in ['google', 'facebook']:
             return render_template(
                 'aiohttp_login/common/http_redirect.html',
@@ -106,6 +107,7 @@ async def registration(request):
             'url_for': url_for,
             'cfg': cfg,
             'form': form,
+            'social_url': social_url(request),
         }
     })
 
@@ -142,6 +144,7 @@ async def login(request):
             'url_for': url_for,
             'cfg': cfg,
             'form': form,
+            'social_url': social_url(request),
         }
     })
 

@@ -14,13 +14,19 @@ from .cfg import cfg
 log = logging.getLogger(__name__)
 
 
+def _get_redirect_uri(request):
+    back_to = request.GET.get(cfg.BACK_URL_QS_KEY)
+    query = {cfg.BACK_URL_QS_KEY: back_to} if back_to else None
+    return str(request.url.with_query(query))
+
+
 async def vkontakte(request):
     if 'error' in request.GET:
         return {}
 
     common_params = {
         'client_id': cfg.VKONTAKTE_ID,
-        'redirect_uri': str(request.url.with_query(None)),
+        'redirect_uri': _get_redirect_uri(request),
         'v': '5.60',
     }
 
@@ -76,7 +82,7 @@ async def google(request):
 
     common_params = {
         'client_id': cfg.GOOGLE_ID,
-        'redirect_uri': str(request.url.with_query(None).with_fragment(None)),
+        'redirect_uri': _get_redirect_uri(request)
     }
     if 'code' not in request.GET:
         # Step 1: redirect to get code
@@ -135,7 +141,7 @@ async def facebook(request):
 
     common_params = {
         'client_id': cfg.FACEBOOK_ID,
-        'redirect_uri': str(request.url.with_query(None)),
+        'redirect_uri': _get_redirect_uri(request)
     }
 
     if 'code' not in request.GET:
