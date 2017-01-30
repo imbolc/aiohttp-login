@@ -1,5 +1,10 @@
 '''
-Response: {user_id: str, email: str or None, name: str} or {} if error occured
+Response: {
+    user_id: str,
+    email: str or None,
+    name: str,
+    back_url: str of None
+} or {} if error occured
 '''
 import logging
 from pprint import pformat
@@ -14,19 +19,15 @@ from .cfg import cfg
 log = logging.getLogger(__name__)
 
 
-def _get_redirect_uri(request):
-    back_to = request.GET.get(cfg.BACK_URL_QS_KEY)
-    query = {cfg.BACK_URL_QS_KEY: back_to} if back_to else None
-    return str(request.url.with_query(query))
-
-
 async def vkontakte(request):
     if 'error' in request.GET:
         return {}
 
+    back_to = request.GET.get(cfg.BACK_URL_QS_KEY)
+    query = {cfg.BACK_URL_QS_KEY: back_to} if back_to else None
     common_params = {
         'client_id': cfg.VKONTAKTE_ID,
-        'redirect_uri': _get_redirect_uri(request),
+        'redirect_uri': str(request.url.with_query(query)),
         'v': '5.60',
     }
 
@@ -73,6 +74,7 @@ async def vkontakte(request):
         'user_id': str(data['user_id']),
         'email': data.get('email'),
         'name': name,
+        'back_to': request.GET.get('back_to'),
     }
 
 
@@ -80,32 +82,36 @@ async def google(request):
     if 'error' in request.GET:
         return {}
 
-    common_params = {
-        'client_id': cfg.GOOGLE_ID,
-        'redirect_uri': str(request.url.with_query(None)),
-    }
+    redirect_uri = str(request.url.with_query(None))
     if 'code' not in request.GET:
         # Step 1: redirect to get code
-        url = URL('https://accounts.google.com/o/oauth2/auth').with_query(dict(
-            common_params,
-            response_type='code',
-            scope=('https://www.googleapis.com/auth/userinfo.profile'
-                   ' https://www.googleapis.com/auth/userinfo.email')
-        ))
+        params = {
+            'client_id': cfg.GOOGLE_ID,
+            'redirect_uri': redirect_uri,
+            'response_type': 'code',
+            'scope': ('https://www.googleapis.com/auth/userinfo.profile'
+                      ' https://www.googleapis.com/auth/userinfo.email'),
+        }
+        if cfg.BACK_URL_QS_KEY in request.GET:
+            params['state'] = request.GET[cfg.BACK_URL_QS_KEY]
+        url = URL(
+            'https://accounts.google.com/o/oauth2/auth').with_query(params)
         raise HTTPFound(url)
 
     # Step 2: get access token
     url = 'https://accounts.google.com/o/oauth2/token'
-    params = dict(
-        common_params,
-        client_secret=cfg.GOOGLE_SECRET,
-        code=request.GET['code'],
-        grant_type='authorization_code',
-    )
+    params = {
+        'client_id': cfg.GOOGLE_ID,
+        'redirect_uri': redirect_uri,
+        'client_secret': cfg.GOOGLE_SECRET,
+        'code': request.GET['code'],
+        'grant_type': 'authorization_code',
+    }
     async with aiohttp.ClientSession(loop=request.app.loop) as client:
         async with client.post(url, data=params) as resp:
             data = await resp.json()
         assert 'access_token' in data, data
+        log.debug('data: %s', pformat(data))
 
         # get user profile
         headers = {'Authorization': 'Bearer ' + data['access_token']}
@@ -113,7 +119,6 @@ async def google(request):
         async with client.get(url, headers=headers) as resp:
             profile = await resp.json()
 
-    assert 'id' in profile
     log.debug('g+ profile: %s', pformat(profile))
 
     email = None
@@ -132,6 +137,7 @@ async def google(request):
         'user_id': profile['id'],
         'email': email,
         'name': name,
+        'back_to': request.GET.get('state'),
     }
 
 

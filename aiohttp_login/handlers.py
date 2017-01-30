@@ -53,7 +53,7 @@ async def social(request):
     if user:
         await authorize_user(request, user)
         flash.success(request, cfg.MSG_LOGGED_IN)
-        url = request.GET.get(cfg.BACK_URL_QS_KEY, cfg.LOGIN_REDIRECT)
+        url = data['back_to'] or cfg.LOGIN_REDIRECT
         if provider in ['google', 'facebook']:
             return render_template(
                 'aiohttp_login/common/http_redirect.html',
