@@ -82,7 +82,7 @@ async def google(request):
 
     common_params = {
         'client_id': cfg.GOOGLE_ID,
-        'redirect_uri': _get_redirect_uri(request)
+        'redirect_uri': str(request.url.with_query(None)),
     }
     if 'code' not in request.GET:
         # Step 1: redirect to get code
@@ -141,7 +141,7 @@ async def facebook(request):
 
     common_params = {
         'client_id': cfg.FACEBOOK_ID,
-        'redirect_uri': _get_redirect_uri(request)
+        'redirect_uri': str(request.url.with_query(None)),
     }
 
     if 'code' not in request.GET:
