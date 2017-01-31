@@ -1,6 +1,6 @@
 REQUIRED = object()
 DEFAULTS = {
-    'THEME': 'bootstrap-4',
+    'THEME': 'aiohttp_login/bootstrap-4',
     'PASSWORD_LEN': (6, 30),
     'LOGIN_REDIRECT': '/',
     'LOGOUT_REDIRECT': 'auth_login',
