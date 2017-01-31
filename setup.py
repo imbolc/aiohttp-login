@@ -38,7 +38,7 @@ install_requires = [
 
 short, desc = get_description()
 setup(
-    version='1.0.3',
+    version='1.0.4',
     name='aiohttp-login',
     url='https://github.com/imbolc/aiohttp-login',
     description=short,
