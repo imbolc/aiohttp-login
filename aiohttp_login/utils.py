@@ -156,4 +156,4 @@ async def render_and_send_mail(request, to, template, context=None):
 
 
 def themed(template):
-    return join('aiohttp_login', cfg.THEME, template)
+    return join(cfg.THEME, template)
