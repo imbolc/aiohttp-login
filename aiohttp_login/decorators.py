@@ -1,7 +1,10 @@
 from functools import wraps
 
-from aiohttp.web import HTTPFound, HTTPForbidden, json_response
-from aiohttp_session import get_session
+from aiohttp.web import HTTPForbidden, json_response, StreamResponse
+try:
+    import ujson as json
+except ImportError:
+    import json
 
 from .cfg import cfg
 from .utils import url_for, redirect, get_cur_user
@@ -32,7 +35,10 @@ def restricted_api(handler):
     async def decorator(request):
         if not request[cfg.REQUEST_USER_KEY]:
             return json_response({'error': 'Access denied'}, status=403)
-        return await handler(request)
+        response = await handler(request)
+        if not isinstance(response, StreamResponse):
+            response = json_response(response, dumps=json.dumps)
+        return response
     return decorator
 
 

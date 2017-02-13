@@ -1,6 +1,7 @@
 from .cfg import cfg
 from . import handlers
-from .decorators import login_required, admin_required, user_to_request  # noqa
+from .decorators import (login_required, admin_required, user_to_request,  # noqa
+                         restricted_api)
 from .utils import url_for  # noqa
 from . import flash  # noqa
 

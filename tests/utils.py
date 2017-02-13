@@ -16,7 +16,7 @@ import aiohttp_login.utils
 from aiohttp_login.utils import get_random_string, encrypt_password
 from aiohttp_login.asyncpg_storage import AsyncpgStorage
 from aiohttp_login.motor_storage import MotorStorage
-from aiohttp_login import cfg, url_for
+from aiohttp_login import cfg, url_for, restricted_api
 
 
 DATABASE = 'aiohttp_login_tests'
@@ -57,6 +57,12 @@ async def create_app(loop, db):
         'SMTP_USERNAME': 'your@gmail.com',
         'SMTP_PASSWORD': 'password'
     })
+
+    @restricted_api
+    async def api_hello_handler(request):
+        return {'hello': 'world'}
+
+    app.router.add_get('/api/hello', api_hello_handler, name='api_hello')
 
     return app
 
