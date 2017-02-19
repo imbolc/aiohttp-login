@@ -12,7 +12,7 @@ from .utils import (encrypt_password, make_confirmation_link,
                     check_password, authorize_user, is_confirmation_allowed,
                     get_random_string, url_for, get_client_ip, redirect,
                     render_and_send_mail, is_confirmation_expired, themed,
-                    social_url)
+                    common_themed, social_url)
 
 
 log = logging.getLogger(__name__)
@@ -56,7 +56,7 @@ async def social(request):
         url = data['back_to'] or cfg.LOGIN_REDIRECT
         if provider in ['google', 'facebook']:
             return render_template(
-                'aiohttp_login/common/http_redirect.html',
+                common_themed('http_redirect.html'),
                 request, {'url': url})
         return redirect(url)
 
@@ -89,7 +89,7 @@ async def registration(request):
         try:
             await render_and_send_mail(
                 request, form.email.data,
-                'aiohttp_login/common/registration_email.html', {
+                common_themed('registration_email.html'), {
                     'host': request.host,
                     'link': link,
                 })
@@ -183,7 +183,7 @@ async def reset_password(request):
         try:
             await render_and_send_mail(
                 request, form.email.data,
-                'aiohttp_login/common/reset_password_email.html', {
+                common_themed('reset_password_email.html'), {
                     'host': request.host,
                     'link': link,
                 })
@@ -247,7 +247,7 @@ async def change_email(request):
         try:
             await render_and_send_mail(
                 request, form.email.data,
-                'aiohttp_login/common/change_email_email.html', {
+                common_themed('change_email_email.html'), {
                     'host': request.host,
                     'link': link,
                 })

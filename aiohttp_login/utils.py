@@ -157,3 +157,6 @@ async def render_and_send_mail(request, to, template, context=None):
 
 def themed(template):
     return join(cfg.THEME, template)
+
+def common_themed(template):
+    return join(cfg.COMMON_THEME, template)
