@@ -1,5 +1,6 @@
 from functools import wraps
 
+from aiohttp.abc import AbstractView
 from aiohttp.web import HTTPForbidden, json_response, StreamResponse
 try:
     import ujson as json
@@ -13,11 +14,15 @@ from .utils import url_for, redirect, get_cur_user
 def user_to_request(handler):
     '''Add user to request if user logged in'''
     @wraps(handler)
-    async def decorator(request):
+    async def decorator(*args):
+        # Supports class based views see web.View
+        if isinstance(args[0], AbstractView):
+            request = args[0].request
+        else:
+            request = args[-1]
         request[cfg.REQUEST_USER_KEY] = await get_cur_user(request)
-        return await handler(request)
+        return await handler(*args)
     return decorator
-
 
 def login_required(handler):
     @user_to_request
