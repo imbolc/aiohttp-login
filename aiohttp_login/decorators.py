@@ -11,36 +11,42 @@ from .cfg import cfg
 from .utils import url_for, redirect, get_cur_user
 
 
+def _get_request(args):
+    # Supports class based views see web.View
+    if isinstance(args[0], AbstractView):
+        return args[0].request
+    return args[-1]
+
+
 def user_to_request(handler):
     '''Add user to request if user logged in'''
     @wraps(handler)
     async def decorator(*args):
-        # Supports class based views see web.View
-        if isinstance(args[0], AbstractView):
-            request = args[0].request
-        else:
-            request = args[-1]
+        request = _get_request(args)
         request[cfg.REQUEST_USER_KEY] = await get_cur_user(request)
         return await handler(*args)
     return decorator
 
+
 def login_required(handler):
     @user_to_request
     @wraps(handler)
-    async def decorator(request):
+    async def decorator(*args):
+        request = _get_request(args)
         if not request[cfg.REQUEST_USER_KEY]:
             return redirect(get_login_url(request))
-        return await handler(request)
+        return await handler(*args)
     return decorator
 
 
 def restricted_api(handler):
     @user_to_request
     @wraps(handler)
-    async def decorator(request):
+    async def decorator(*args):
+        request = _get_request(args)
         if not request[cfg.REQUEST_USER_KEY]:
             return json_response({'error': 'Access denied'}, status=403)
-        response = await handler(request)
+        response = await handler(*args)
         if not isinstance(response, StreamResponse):
             response = json_response(response, dumps=json.dumps)
         return response
@@ -49,7 +55,8 @@ def restricted_api(handler):
 
 def admin_required(handler):
     @wraps(handler)
-    async def decorator(request):
+    async def decorator(args):
+        request = _get_request(args)
         response = await login_required(handler)(request)
         if request['user']['email'] not in cfg.ADMIN_EMAILS:
             raise HTTPForbidden(reason='You are not admin')

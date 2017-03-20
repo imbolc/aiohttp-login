@@ -5,3 +5,4 @@ pytest-aiohttp
 jinja_app_loader
 asyncpg
 motor
+pyandoc
