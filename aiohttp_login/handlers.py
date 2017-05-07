@@ -325,7 +325,7 @@ async def confirmation(request):
             flash.success(request, cfg.MSG_EMAIL_CHANGED)
             return redirect('auth_change_email')
 
-    return render_template(themed('confirmation_error.html'), request)
+    return render_template(themed('confirmation_error.html'), request, None)
 
 
 def template_handler(template, context=None):
