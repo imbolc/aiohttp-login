@@ -31,7 +31,7 @@ async def vkontakte(request):
 
     # Step 1: redirect browser to login dialog
     if 'code' not in request.GET:
-        url = 'http://api.vkontakte.ru/oauth/authorize'
+        url = 'http://api.vk.com/oauth/authorize'
         params = common_params.copy()
         params['scope'] = 'email'
         if cfg.BACK_URL_QS_KEY in request.GET:
