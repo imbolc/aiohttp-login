@@ -14,7 +14,6 @@ from .utils import (encrypt_password, make_confirmation_link,
                     render_and_send_mail, is_confirmation_expired, themed,
                     common_themed, social_url)
 
-
 log = logging.getLogger(__name__)
 
 
@@ -57,7 +56,7 @@ async def social(request):
         if provider in ['google', 'facebook']:
             return render_template(
                 common_themed('http_redirect.html'),
-                request, {'url': url})
+                request, {'url': url, 'auth': {'cfg': cfg}})
         return redirect(url)
 
     flash.error(request, cfg.MSG_AUTH_FAILED)
@@ -90,6 +89,9 @@ async def registration(request):
             await render_and_send_mail(
                 request, form.email.data,
                 common_themed('registration_email.html'), {
+                    'auth': {
+                        'cfg': cfg,
+                    },
                     'host': request.host,
                     'link': link,
                 })
@@ -184,6 +186,9 @@ async def reset_password(request):
             await render_and_send_mail(
                 request, form.email.data,
                 common_themed('reset_password_email.html'), {
+                    'auth': {
+                        'cfg': cfg,
+                    },
                     'host': request.host,
                     'link': link,
                 })
@@ -248,6 +253,9 @@ async def change_email(request):
             await render_and_send_mail(
                 request, form.email.data,
                 common_themed('change_email_email.html'), {
+                    'auth': {
+                        'cfg': cfg,
+                    },
                     'host': request.host,
                     'link': link,
                 })
@@ -325,7 +333,11 @@ async def confirmation(request):
             flash.success(request, cfg.MSG_EMAIL_CHANGED)
             return redirect('auth_change_email')
 
-    return render_template(themed('confirmation_error.html'), request, None)
+    return render_template(themed('confirmation_error.html'), request, {
+        'auth': {
+            'cfg': cfg
+        }
+    })
 
 
 def template_handler(template, context=None):
