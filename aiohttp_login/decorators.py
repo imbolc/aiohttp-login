@@ -54,8 +54,9 @@ def restricted_api(handler):
 
 
 def admin_required(handler):
+    @user_to_request
     @wraps(handler)
-    async def decorator(args):
+    async def decorator(*args):
         request = _get_request(args)
         response = await login_required(handler)(request)
         if request['user']['email'] not in cfg.ADMIN_EMAILS:
