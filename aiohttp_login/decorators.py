@@ -54,7 +54,6 @@ def restricted_api(handler):
 
 
 def admin_required(handler):
-    @user_to_request
     @wraps(handler)
     async def decorator(*args):
         request = _get_request(args)
