@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 
 
 async def vkontakte(request):
-    if 'error' in request.GET:
+    if 'error' in request.query:
         return {}
 
     common_params = {
@@ -30,12 +30,12 @@ async def vkontakte(request):
     }
 
     # Step 1: redirect browser to login dialog
-    if 'code' not in request.GET:
+    if 'code' not in request.query:
         url = 'http://api.vk.com/oauth/authorize'
         params = common_params.copy()
         params['scope'] = 'email'
-        if cfg.BACK_URL_QS_KEY in request.GET:
-            params['state'] = request.GET[cfg.BACK_URL_QS_KEY]
+        if cfg.BACK_URL_QS_KEY in request.query:
+            params['state'] = request.query[cfg.BACK_URL_QS_KEY]
         raise HTTPFound(URL(url).with_query(params))
 
     # Step 2: get access token
@@ -43,7 +43,7 @@ async def vkontakte(request):
     params = common_params.copy()
     params.update({
         'client_secret': cfg.VKONTAKTE_SECRET,
-        'code': request.GET['code'],
+        'code': request.query['code'],
     })
     async with aiohttp.ClientSession(loop=request.app.loop) as client:
         async with client.get(URL(url).with_query(params)) as resp:
@@ -74,12 +74,12 @@ async def vkontakte(request):
         'user_id': str(data['user_id']),
         'email': data.get('email'),
         'name': name,
-        'back_to': request.GET.get('state'),
+        'back_to': request.query.get('state'),
     }
 
 
 async def google(request):
-    if 'error' in request.GET:
+    if 'error' in request.query:
         return {}
 
     common_params = {
@@ -88,7 +88,7 @@ async def google(request):
     }
 
     # Step 1: redirect to get code
-    if 'code' not in request.GET:
+    if 'code' not in request.query:
         url = 'https://accounts.google.com/o/oauth2/auth'
         params = common_params.copy()
         params.update({
@@ -96,8 +96,8 @@ async def google(request):
             'scope': ('https://www.googleapis.com/auth/userinfo.profile'
                       ' https://www.googleapis.com/auth/userinfo.email'),
         })
-        if cfg.BACK_URL_QS_KEY in request.GET:
-            params['state'] = request.GET[cfg.BACK_URL_QS_KEY]
+        if cfg.BACK_URL_QS_KEY in request.query:
+            params['state'] = request.query[cfg.BACK_URL_QS_KEY]
         url = URL(url).with_query(params)
         raise HTTPFound(url)
 
@@ -106,7 +106,7 @@ async def google(request):
     params = common_params.copy()
     params.update({
         'client_secret': cfg.GOOGLE_SECRET,
-        'code': request.GET['code'],
+        'code': request.query['code'],
         'grant_type': 'authorization_code',
     })
     async with aiohttp.ClientSession(loop=request.app.loop) as client:
@@ -139,12 +139,12 @@ async def google(request):
         'user_id': profile['id'],
         'email': email,
         'name': name,
-        'back_to': request.GET.get('state'),
+        'back_to': request.query.get('state'),
     }
 
 
 async def facebook(request):
-    if 'error' in request.GET:
+    if 'error' in request.query:
         return {}
 
     common_params = {
@@ -153,14 +153,14 @@ async def facebook(request):
     }
 
     # Step 1: redirect to get code
-    if 'code' not in request.GET:
+    if 'code' not in request.query:
         params = common_params.copy()
         params.update({
             'response_type': 'code',
             'scope': 'email',
         })
-        if cfg.BACK_URL_QS_KEY in request.GET:
-            params['state'] = request.GET[cfg.BACK_URL_QS_KEY]
+        if cfg.BACK_URL_QS_KEY in request.query:
+            params['state'] = request.query[cfg.BACK_URL_QS_KEY]
         url = URL(
             'https://www.facebook.com/v2.8/dialog/oauth').with_query(params)
         raise HTTPFound(url)
@@ -170,7 +170,7 @@ async def facebook(request):
         dict(
             common_params,
             client_secret=cfg.FACEBOOK_SECRET,
-            code=request.GET['code'],
+            code=request.query['code'],
         ))
     async with aiohttp.ClientSession(loop=request.app.loop) as client:
         async with client.get(url) as resp:
@@ -197,5 +197,5 @@ async def facebook(request):
         'user_id': profile['id'],
         'email': email,
         'name': name,
-        'back_to': request.GET.get('state'),
+        'back_to': request.query.get('state'),
     }
