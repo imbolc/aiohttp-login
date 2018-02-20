@@ -138,7 +138,7 @@ async def login(request):
 
         await authorize_user(request, user)
         flash.success(request, cfg.MSG_LOGGED_IN)
-        url = request.GET.get(cfg.BACK_URL_QS_KEY, cfg.LOGIN_REDIRECT)
+        url = request.query.get(cfg.BACK_URL_QS_KEY, cfg.LOGIN_REDIRECT)
         return redirect(url)
 
     return render_template(themed('login.html'), request, {
