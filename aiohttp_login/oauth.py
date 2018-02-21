@@ -56,7 +56,8 @@ async def vkontakte(request):
         url = URL('https://api.vk.com/method/users.get').with_query(
             access_token=data['access_token'],
             uid=data['user_id'],
-            fields='nickname,screen_name'
+            fields='nickname,screen_name',
+            v='5.60'
         )
         async with client.get(url) as resp:
             profile = await resp.json()
