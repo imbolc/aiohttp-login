@@ -47,7 +47,7 @@ DEFAULTS = {
                                 ' email, before you can login'),
     'MSG_EMAIL_EXISTS': 'This email is already registered',
     'MSG_OFTEN_RESET_PASSWORD': (
-        'You can\'t request of restoring your password so often. Please, use'
+        'You can not request of restoring your password so often. Please, use'
         ' the link we sent you recently'),
     'MSG_CANT_SEND_MAIL': 'Can\'t send email, try a little later',
     'MSG_PASSWORDS_NOT_MATCH': 'Passwords must match',
